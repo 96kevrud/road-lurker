@@ -14,3 +14,4 @@ This project aims to provide a map over all swedish traffic flow cameras. The id
 * https://www.openstreetmap.org
 * https://api.trafikinfo.trafikverket.se/v1.3/Images/TrafficFlowCamera_39635266.Jpeg?type=fullsize&maxage=15
 * https://leafletjs.com/examples/quick-start/
+* http://www.webbkameror.se
