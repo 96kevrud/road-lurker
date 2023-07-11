@@ -1,8 +1,6 @@
 
 
-function helloworld(){
-    alert("aio luktar bajs")
-}
+
 
 
 var map = L.map('map').setView([51.505, -0.09], 13);
@@ -30,9 +28,12 @@ var polygon = L.polygon([
 ]).addTo(map);
 
 marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
-circle.bindPopup("<a href=\"https://api.trafikinfo.trafikverket.se/v1.3/Images/TrafficFlowCamera_39635266.Jpeg?type=fullsize&maxage=15\"><img src=\"https://api.trafikinfo.trafikverket.se/v1.3/Images/TrafficFlowCamera_39635266.Jpeg?maxage=15\"></a>");
-polygon.bindPopup("I am a polygon.");
 
+function helloworld(StdImgUrl){
+    polygon.bindPopup("lorem ipsum");
+    HiResImgUrl = StdImgUrl.substring(0,StdImgUrl.length-10)+"?type=fullsize&maxage=15"
+    circle.bindPopup("<a href="+HiResImgUrl+"><img src="+StdImgUrl+"></a>");
+}
 
 var popup = L.popup()
     .setLatLng([51.513, -0.09])
