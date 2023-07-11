@@ -30,7 +30,7 @@ var polygon = L.polygon([
 ]).addTo(map);
 
 marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
-circle.bindPopup("<img src=\"https://i.imgur.com/FfuC0M5.jpeg\">");
+circle.bindPopup("<a href=\"https://api.trafikinfo.trafikverket.se/v1.3/Images/TrafficFlowCamera_39635266.Jpeg?type=fullsize&maxage=15\"><img src=\"https://api.trafikinfo.trafikverket.se/v1.3/Images/TrafficFlowCamera_39635266.Jpeg?maxage=15\"></a>");
 polygon.bindPopup("I am a polygon.");
 
 
