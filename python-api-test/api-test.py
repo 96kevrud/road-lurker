@@ -1,21 +1,21 @@
+import sys
 import requests
 
 api_key = "YOUR_API_KEY"
-
 url = "https://api.trafikinfo.trafikverket.se/v2/data.json"
 headers = {'Content-Type':'text/xml'}
 
-with open("post.xml") as xml_file:
-    xml_string = xml_file.read()
-    xml_string = xml_string.replace("APIKEY", api_key)
-
+with open("post.xml") as xml:
     response = requests.post(
         url=url,
-        data=xml_string,
+        data=xml,
         headers=headers
     )
-
-    print(response.status_code)
+    if str(responseCode := response.status_code) == "2":
+        print("Sucess code:",responseCode)
+    else:
+        print("Request failed code:",responseCode)
+        sys.exit("Did not get a 2xx response")
     result = response.json()["RESPONSE"]["RESULT"][0]
     cameras = result["Camera"]
     print(cameras[0])
