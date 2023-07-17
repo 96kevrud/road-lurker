@@ -1,0 +1,13 @@
+<REQUEST>
+  <LOGIN authenticationkey="3d1e124ea3ac4231b0814f5d1553d141" />
+  <QUERY objecttype="Camera" schemaversion="1">
+  <FILTER>
+    <EQ name="Active" value="true"/>
+  </FILTER>
+  <INCLUDE>Active</INCLUDE>
+  <INCLUDE>Direction</INCLUDE>
+  <INCLUDE>Geometry.WGS84</INCLUDE>
+  <INCLUDE>PhotoUrl</INCLUDE>
+  <INCLUDE>PhotoTime</INCLUDE>
+  </QUERY>
+</REQUEST>

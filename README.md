@@ -7,17 +7,26 @@ This project aims to provide a map over all swedish traffic flow cameras. The id
 > See useful links #4
 - [x] Which language should this project use?
 > Javascript
-- [ ] Trafikverkets api has camera info and images for Sweden. How to use?
-> We have figured out and tested using the camera images,
-> but we still need to figure out and test using camera info api
->> For use of image see *getting-started-leafletjs*
-- [ ] How many cameras does Trafikverket have?
-> We might be able to figure this out via webbkameror.se
-> (see useful links #5), **but that might not be accurate**.
+- [x] Trafikverkets api has camera info and images for Sweden. How to use?
+> Api seems easy to use, see section *Using trafikverkets api* below.
+
+- [x] How many cameras does Trafikverket have? **1549** active cameras
+>
 - [ ] How to map Trafikverkets cameras to background map?
 > leafletjs allows us to place markers at cordinates,
 > but we still need to figure out how to use Trafikverkets camera info API.
 > *Trafikverket may use a difrent scheme for cordinates then leafletjs*
+
+### Using trafikverkets api
+The api wants an xml style post request, see python-api-test for an example.
+All camera images seems to have 'HasFullSizePhoto' attribute which is nice.
+About half of all cameras has an overhead sketch of camera location and rotation, might be useful for double checking our camera rotations later on. 
+Exmaple:
+ * https://api.trafikinfo.trafikverket.se/v2/Images/TrafficFlowCamera_39635330.Jpeg
+ * https://api.trafikinfo.trafikverket.se/v2/Images/TrafficFlowCamera_39635330.Jpeg?type=sketch
+ * https://api.trafikinfo.trafikverket.se/v2/Images/TrafficFlowCamera_39635330.Jpeg?type=fullsize
+
+
 
 ### Useful links
 1. https://api.trafikinfo.trafikverket.se/
