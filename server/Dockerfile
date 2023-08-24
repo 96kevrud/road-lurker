@@ -6,9 +6,9 @@ COPY road-lurker /app/road-lurker
 
 WORKDIR /app/road-lurker
 
+RUN ["cargo", "build"]
+
 ENV ROCKET_ADDRESS=0.0.0.0
 EXPOSE 8000
-
-RUN ["touch","testing.html"]
 
 CMD ["cargo", "run"]

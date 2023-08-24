@@ -1,22 +1,27 @@
 #[macro_use] extern crate rocket;
 
+mod trafikverket;
 
 use rocket::{fs::NamedFile, response::Redirect};
 use std::path::{Path, PathBuf};
+use trafikverket::trafikverket::test;
 
 #[get("/")]
 fn index() -> Redirect {
-    let redirect = Redirect::to(uri!("/index.html"));
-    redirect
+    println!("index");
+    Redirect::to(uri!("/index.html"))
 }
 
 #[get("/index.html")]
 async fn home () -> Option<NamedFile> {
+    println!("inside home");
+    println!("{}", test().await);
     NamedFile::open("client/index.html").await.ok()
 }
 
 #[get("/<file..>")]
 async fn files(file: PathBuf) -> Option<NamedFile> {
+    println!("inside files hello world");
     NamedFile::open(Path::new("client").join(file)).await.ok()
 }
 
