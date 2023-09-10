@@ -1,0 +1,6 @@
+{
+    "cameras" : [
+        {"imgLink":"https://api.trafikinfo.trafikverket.se/v1.3/Images/TrafficFlowCamera_39635266.Jpeg?maxage=15",
+        "latitude":51.523495,"longitude":-0.129948,"angle":45}
+    ]
+}

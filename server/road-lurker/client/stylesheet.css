@@ -1,0 +1,50 @@
+#map {
+    height: 180px;
+}
+body{
+    color: whitesmoke;
+    background-color: black;
+}
+.center {
+margin-left: auto;
+margin-right: auto;
+}
+.main{
+    background-color: rgba(0,0,0,0.75);
+}
+a:link{
+color: darkorange;
+}
+a:visited{
+color: rgb(200, 100, 0);
+}
+a:hover{
+background-color: rgba(255, 255, 255, 0.75);
+}
+a.button:link{
+background-color: darkcyan;
+color: white;
+padding: 14px 25px;
+text-align: center;
+text-decoration: none;
+display: inline-block;
+}
+a.button:visited{
+background-color: rgba(112, 128, 144, 0.5);
+color: white;
+padding: 14px 25px;
+text-align: center;
+text-decoration: none;
+display: inline-block;
+}
+a.button:hover{
+background-color: rgba(127, 255, 0, 0.5);
+color: white;
+padding: 14px 25px;
+text-align: center;
+text-decoration: none;
+display: inline-block;
+}
+.warning{
+color: red;
+}
