@@ -1,9 +1,9 @@
 #!/bin/bash
 
 run_local () {
-    echo "hej"
     export TRAFIKVERKET_APIKEY="$(cat .apikey)"
-    cargo run --manifest-path road-lurker/Cargo.toml
+    cd road-lurker
+    cargo run
 }
 
 run_local
