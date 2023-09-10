@@ -4,7 +4,7 @@ mod trafikverket;
 
 use rocket::{fs::NamedFile, response::Redirect};
 use std::path::{Path, PathBuf};
-use trafikverket::trafikverket::fetch_cameras;
+use trafikverket::trafikverket::sync_cameras;
 
 #[get("/")]
 fn index() -> Redirect {
@@ -15,7 +15,7 @@ fn index() -> Redirect {
 #[get("/index.html")]
 async fn home () -> Option<NamedFile> {
     println!("inside home");
-    fetch_cameras().await;
+    sync_cameras().await;
     NamedFile::open("client/index.html").await.ok()
 }
 
