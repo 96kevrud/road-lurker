@@ -27,6 +27,8 @@ Exmaple:
  * https://api.trafikinfo.trafikverket.se/v2/Images/TrafficFlowCamera_39635330.Jpeg?type=fullsize
 
 
+### Preparations
+Place your trafikverket apikey in a `.apikey` file next to the DockerFile
 
 ### Useful links
 1. https://api.trafikinfo.trafikverket.se/

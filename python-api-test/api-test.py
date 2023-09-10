@@ -12,7 +12,7 @@ with open("post.xml") as xml:
         headers=headers
     )
     if str(responseCode := response.status_code) == "2":
-        print("Sucess code:",responseCode)
+        print("Success code:",responseCode)
     else:
         print("Request failed code:",responseCode)
         sys.exit("Did not get a 2xx response")

@@ -4,6 +4,8 @@ RUN ["apk", "add", "musl-dev"]
 
 COPY road-lurker /app/road-lurker
 
+ARG TRAFIKVERKET_APIKEY
+
 WORKDIR /app/road-lurker
 
 RUN ["cargo", "build"]
