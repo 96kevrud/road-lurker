@@ -13,8 +13,6 @@ function calculateNewLat(lat,addMeters){
 function calculateNewLong(lat,long,addMeters){
     return long + (addMeters/EARTH_R) * (180/Math.PI) / Math.cos(lat*Math.PI/180);
 }
-var LastCameraHash=-1
-var LastLink=""
 function markCamera(lat,long,ang,link){
     function calculateCoordinates(lat,long,ang){
         ang=toRadians(ang)
@@ -34,18 +32,15 @@ function markCamera(lat,long,ang,link){
         return [[p1x,p1y],[p2x,p2y]]
     }
     var cords=calculateCoordinates(lat,long,ang)
+    L.circle([lat, long], 10, {color:"#f50505", fill:true, fillOpacity:1}).addTo(map);
     var poly = L.polygon([
         [lat, long],
         [cords[0][0], cords[0][1]],
         [cords[1][0], cords[1][1]]
     ]).addTo(map);
     var polyString=""
-    L.circle([lat, long], 10, {color:"#f50505", fill:true, fillOpacity:1}).addTo(map);
     polyString="<a href="+link+"?type=fullsize&maxage=15><img src="+link+"></a><br>"
     poly.bindPopup(polyString);
-    LastCameraHash=lat*long
-    LastLink=link
-    //poly.bindPopup("<a href="+link+"?type=fullsize&maxage=15><img src="+link+"></a>");
 }
 
 async function run(){
