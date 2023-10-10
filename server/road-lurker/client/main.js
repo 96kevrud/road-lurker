@@ -34,7 +34,7 @@ function markCamera(lat,long,ang,link){
         return [[p1x,p1y],[p2x,p2y]]
     }
     var cords=calculateCoordinates(lat,long,ang)
-    var polygon = L.polygon([
+    L.polygon([
         [lat, long],
         [cords[0][0], cords[0][1]],
         [cords[1][0], cords[1][1]]
@@ -44,7 +44,16 @@ function markCamera(lat,long,ang,link){
 }
 
 async function run(){
-    const response = await fetch("data.json")
+    const response = await fetch("data/cameras.json")
     const data = await response.json()
-    markCamera(data.cameras[0].latitude,data.cameras[0].longitude,data.cameras[0].angle,data.cameras[0].imgLink)
+
+    for(let i=0 ; data.cameras.length; i++){
+        let cam = data.cameras[i];
+        markCamera(
+            cam.latitude,
+            cam.longitude,
+            cam.direction,
+            cam.url
+        )
+    }
 }

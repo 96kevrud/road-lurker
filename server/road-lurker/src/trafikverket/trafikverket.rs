@@ -56,8 +56,8 @@ fn reformat_camera_data(camera_json: serde_json::Value) -> serde_json::Value {
 
         new_cams.push(json!({
             "active": camera["Active"],
-            "latitude": &coords[1].parse::<f32>().unwrap(),
-            "longitude": &coords[2].parse::<f32>().unwrap(),
+            "longitude": &coords[1].parse::<f32>().unwrap(),
+            "latitude": &coords[2].parse::<f32>().unwrap(),
             "direction": direction,
             "phototime": camera["PhotoTime"],
             "url": camera["PhotoUrl"]
