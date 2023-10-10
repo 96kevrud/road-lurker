@@ -1,4 +1,4 @@
-var map = L.map('map').setView([51.505, -0.09], 13);
+var map = L.map('map').setView([57.698895, 11.942802], 7);
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -34,13 +34,15 @@ function markCamera(lat,long,ang,link){
         return [[p1x,p1y],[p2x,p2y]]
     }
     var cords=calculateCoordinates(lat,long,ang)
-    L.polygon([
+    L.circle([lat, long], 10, {color:"#f50505", fill:true, fillOpacity:1}).addTo(map);
+    var poly = L.polygon([
         [lat, long],
         [cords[0][0], cords[0][1]],
         [cords[1][0], cords[1][1]]
     ]).addTo(map);
-    var marker = L.marker([lat, long]).addTo(map);
-    marker.bindPopup("<a href="+link+"><img src="+link+"></a>");
+    
+    //var marker = L.marker([lat, long]).addTo(map);
+    poly.bindPopup("<a href="+link+"?type=fullsize&maxage=15><img src="+link+"></a>");
 }
 
 async function run(){
