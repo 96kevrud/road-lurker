@@ -6,7 +6,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 const EARTH_R = 6378000
-function toRadians(angle){return angle * (180/Math.PI);}
+function toRadians(angle){return angle * (Math.PI/180);}
 function calculateNewLat(lat,addMeters){
     return lat + (addMeters/EARTH_R) * (180/Math.PI);
 }
@@ -15,9 +15,9 @@ function calculateNewLong(lat,long,addMeters){
 }
 function markCamera(lat,long,ang,link){
     function calculateCoordinates(lat,long,ang){
-        ang=toRadians(ang)
+        ang=toRadians(ang+130+180) // Do not touch!
         const RANGE = 100;
-        const CONE_ANGLE = toRadians(70)
+        const CONE_ANGLE = toRadians(60)
         var coneSide = Math.abs(RANGE/Math.cos(CONE_ANGLE/2))
         var gamma = toRadians(90)-(CONE_ANGLE/2)-ang
         var p1xdx = Math.sin(gamma)*coneSide
