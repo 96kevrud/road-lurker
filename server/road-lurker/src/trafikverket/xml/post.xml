@@ -4,6 +4,7 @@
   <FILTER>
     <EQ name="Active" value="true"/>
   </FILTER>
+  <INCLUDE>Id</INCLUDE>
   <INCLUDE>Active</INCLUDE>
   <INCLUDE>Direction</INCLUDE>
   <INCLUDE>Geometry.WGS84</INCLUDE>

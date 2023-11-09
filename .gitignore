@@ -4,3 +4,4 @@ server/road-lurker/debug
 server/road-lurker/.rustc_info.json
 server/.apikey
 server/road-lurker/src/trafikverket/data/*.json
+server/road-lurker/data/images

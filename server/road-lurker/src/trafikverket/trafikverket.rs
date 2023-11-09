@@ -5,13 +5,48 @@ use serde_json::json;
 use std::env;
 use std::fs;
 use reqwest::header::CONTENT_TYPE;
+use std::time::SystemTime;
+use std::{fs::File, io::{copy, Cursor}};
 
 pub async fn sync_cameras(){
     let cameras = fetch_cameras().await;
 
     fs::write("data/cameras.json", &cameras.to_string())
-        .expect("Could not write to file")
+        .expect("Could not write to file");
+
+    fetch_images(cameras).await;
 }
+
+async fn fetch_images(camera_json: serde_json::Value){
+    let cameras = camera_json.get("cameras").unwrap();
+
+    for cam in cameras.as_array().unwrap(){
+        println!("{}", cam["id"]);
+        let url = cam.get("url").unwrap().as_str().unwrap();
+        println!("{}", url);        
+
+        let image_dir = format!("data/images/{}", cam["id"].as_str().unwrap());        
+        fs::create_dir_all(&image_dir).expect("Could not create dirs");
+
+        let time_now = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_secs();
+        let image_path = format!("{}/{}.jpeg", image_dir, time_now);
+        //fs::write(image_path, image_raw).expect("Could not write image to file")
+
+        let mut file = File::create(image_path).unwrap();
+        let image = reqwest::get(url)
+            .await
+            .unwrap()
+            .bytes()
+            .await
+            .unwrap();
+
+        let mut content =  Cursor::new(image);
+        copy(&mut content, &mut file).unwrap();
+
+    }
+
+}
+
 
 async fn fetch_cameras() -> serde_json::Value {
     let cameras = query_api_cameras().await;
@@ -55,6 +90,7 @@ fn reformat_camera_data(camera_json: serde_json::Value) -> serde_json::Value {
         };
 
         new_cams.push(json!({
+            "id": camera["Id"],
             "active": camera["Active"],
             "longitude": &coords[1].parse::<f32>().unwrap(),
             "latitude": &coords[2].parse::<f32>().unwrap(),
