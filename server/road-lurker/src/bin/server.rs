@@ -1,10 +1,10 @@
 #[macro_use] extern crate rocket;
 
-mod trafikverket;
+//mod trafikverket;
 
 use rocket::{fs::NamedFile, response::Redirect};
 use std::path::{Path, PathBuf};
-use trafikverket::trafikverket::sync_cameras;
+use trafikverket::sync_cameras;
 
 #[get("/")]
 fn index() -> Redirect {

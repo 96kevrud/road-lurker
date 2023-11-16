@@ -14,7 +14,7 @@ pub async fn sync_cameras(){
     fs::write("data/cameras.json", &cameras.to_string())
         .expect("Could not write to file");
 
-    fetch_images(cameras).await;
+    //fetch_images(cameras).await;
 }
 
 async fn fetch_images(camera_json: serde_json::Value){

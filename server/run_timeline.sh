@@ -3,7 +3,7 @@
 run_cargo () {
     export TRAFIKVERKET_APIKEY="$(cat .apikey)"
     cd road-lurker
-    cargo run
+    cargo run --bin timeline
 }
 
 run_cargo
