@@ -1,6 +1,6 @@
 <REQUEST>
   <LOGIN authenticationkey="APIKEY" />
-  <QUERY objecttype="Camera" schemaversion="1">
+  <QUERY objecttype="Camera" schemaversion="1" limit="5">
   <FILTER>
     <EQ name="Active" value="true"/>
   </FILTER>

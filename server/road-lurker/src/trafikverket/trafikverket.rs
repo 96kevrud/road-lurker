@@ -4,47 +4,63 @@ use regex::Regex;
 use serde_json::json;
 use std::env;
 use std::fs;
+use futures::future::join_all;
 use reqwest::header::CONTENT_TYPE;
-use std::time::SystemTime;
+use std::time::{Duration, SystemTime};
+use std::thread::sleep;
 use std::{fs::File, io::{copy, Cursor}};
 
-pub async fn sync_cameras(){
-    let cameras = fetch_cameras().await;
+pub struct DataFetcher{}
 
-    fs::write("data/cameras.json", &cameras.to_string())
-        .expect("Could not write to file");
+impl DataFetcher {
 
-    //fetch_images(cameras).await;
+    pub fn create() -> Self {
+        DataFetcher {}
+    }
+
+    pub async fn start(&self){
+        loop {
+            let cameras = fetch_cameras().await;
+            fs::write("data/cameras.json", &cameras.to_string())
+                .expect("Could not write to file");
+            fetch_images(cameras).await;
+            sleep(Duration::from_secs(10))
+        }
+    }
+    
 }
 
 async fn fetch_images(camera_json: serde_json::Value){
     let cameras = camera_json.get("cameras").unwrap();
 
+    let mut futures = vec![];
     for cam in cameras.as_array().unwrap(){
         println!("{}", cam["id"]);
         let url = cam.get("url").unwrap().as_str().unwrap();
-        println!("{}", url);        
-
-        let image_dir = format!("data/images/{}", cam["id"].as_str().unwrap());        
-        fs::create_dir_all(&image_dir).expect("Could not create dirs");
-
-        let time_now = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_secs();
-        let image_path = format!("{}/{}.jpeg", image_dir, time_now);
-        //fs::write(image_path, image_raw).expect("Could not write image to file")
-
-        let mut file = File::create(image_path).unwrap();
-        let image = reqwest::get(url)
-            .await
-            .unwrap()
-            .bytes()
-            .await
-            .unwrap();
-
-        let mut content =  Cursor::new(image);
-        copy(&mut content, &mut file).unwrap();
-
+        let future = fetch_image(cam["id"].to_string(), url);
+        futures.push(future)
     }
+    join_all(futures).await;
 
+}
+
+
+async fn fetch_image(id: String, url: &str){     
+    
+    let image = reqwest::get(url)
+        .await
+        .unwrap()
+        .bytes()
+        .await
+        .unwrap();
+
+    let image_dir = format!("data/images/{}", id);        
+    fs::create_dir_all(&image_dir).expect("Could not create dirs");
+    let time_now = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_secs();
+    let image_path = format!("{}/{}.jpeg", image_dir, time_now);
+    let mut file = File::create(image_path).unwrap();
+    let mut content =  Cursor::new(image);
+    copy(&mut content, &mut file).unwrap();
 }
 
 
