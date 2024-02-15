@@ -4,11 +4,13 @@ use regex::Regex;
 use serde_json::json;
 use std::env;
 use std::fs;
+use std::path::Path;
 use futures::future::join_all;
 use reqwest::header::CONTENT_TYPE;
 use std::time::{Duration, SystemTime};
 use std::thread::sleep;
 use std::{fs::File, io::{copy, Cursor}};
+use sha256::try_digest;
 
 pub struct DataFetcher{}
 
@@ -27,7 +29,6 @@ impl DataFetcher {
             sleep(Duration::from_secs(10))
         }
     }
-    
 }
 
 async fn fetch_images(camera_json: serde_json::Value){
@@ -35,9 +36,8 @@ async fn fetch_images(camera_json: serde_json::Value){
 
     let mut futures = vec![];
     for cam in cameras.as_array().unwrap(){
-        println!("{}", cam["id"]);
         let url = cam.get("url").unwrap().as_str().unwrap();
-        let future = fetch_image(cam["id"].to_string(), url);
+        let future = fetch_image(&cam["id"].as_str().unwrap(), url);
         futures.push(future)
     }
     join_all(futures).await;
@@ -45,7 +45,7 @@ async fn fetch_images(camera_json: serde_json::Value){
 }
 
 
-async fn fetch_image(id: String, url: &str){     
+async fn fetch_image(id: &str, url: &str){     
     
     let image = reqwest::get(url)
         .await
@@ -58,9 +58,15 @@ async fn fetch_image(id: String, url: &str){
     fs::create_dir_all(&image_dir).expect("Could not create dirs");
     let time_now = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_secs();
     let image_path = format!("{}/{}.jpeg", image_dir, time_now);
-    let mut file = File::create(image_path).unwrap();
+    let mut file = File::create(&image_path).unwrap();
     let mut content =  Cursor::new(image);
-    copy(&mut content, &mut file).unwrap();
+    copy(&mut content, &mut file).ok();
+
+    let hash = try_digest(Path::new(&image_path)).unwrap();
+    let hash_path = format!("{}/{}.txt", image_dir, "sha256sum");
+    let mut hash_file = File::create(&hash_path).unwrap();
+    let mut hash_content =  Cursor::new(hash);
+    copy(&mut hash_content, &mut hash_file).ok();
 }
 
 
@@ -104,9 +110,11 @@ fn reformat_camera_data(camera_json: serde_json::Value) -> serde_json::Value {
             Ok(v) => v,
             Err(_) => 999
         };
-
+        
+        let x = camera["Id"].to_string();
+        let id = &x[1..x.len()-1];
         new_cams.push(json!({
-            "id": camera["Id"],
+            "id": id,
             "active": camera["Active"],
             "longitude": &coords[1].parse::<f32>().unwrap(),
             "latitude": &coords[2].parse::<f32>().unwrap(),

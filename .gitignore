@@ -6,4 +6,7 @@ server/.apikey
 server/road-lurker/src/trafikverket/data/*.json
 server/road-lurker/data/images
 server/road-lurker/data/old_images
+server/road-lurker/**/*.jpeg
+server/road-lurker/data/cameras.json
+
 
